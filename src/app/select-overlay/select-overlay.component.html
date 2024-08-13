@@ -1,0 +1,11 @@
+<div 
+    class="select-area"
+    [style]="selectAreaStyles"
+></div>
+<div 
+    class="overlay"
+    (mousedown)="startSelection($event)"
+    (mousemove)="moveSelection($event)"
+    (mouseup)="endSelection()"
+>
+</div>

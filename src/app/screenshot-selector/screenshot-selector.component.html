@@ -1,0 +1,11 @@
+<div class="image-container">
+    <img
+        *ngIf="screenshotPath"
+        [src]="screenshotPath"
+        class="screenshot"
+    />
+    <app-select-overlay
+        (mousedown)="startSelection($event)"
+        (mouseup)="endSelection($event)"
+    ></app-select-overlay>
+</div>

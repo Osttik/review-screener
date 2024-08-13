@@ -1,9 +1,25 @@
-<div id="canvas-container">
-    <canvas id="canvas"></canvas>
-  </div>
-  <div id="controls">
-    <button (click)="exit()">Exit</button>
-    <button (click)="saveCanvas()">Save</button>
-    <button (click)="addReview()">Add Review</button>
+<div #parent class="canvas-container" (click)="addReviewTextArea($event)">
+  <canvas #canvas id="canvas" class="full-screen-canvas" style="display:none;"></canvas>
+  <canvas #offscreenCanvasElemen class="full-screen-canvas" style="display:none;"></canvas>
+  <ng2-konva [config]="stageConfig">
+    <ng2-konva-layer>
+      <ng2-konva-rect [config]="rectConfig"></ng2-konva-rect>
+      <!-- Add other shapes, images, etc. -->
+    </ng2-konva-layer>
+  </ng2-konva>
+  <div class="controls">
+    <button id="exit-btn" (click)="exit()">Exit</button>
+    <button id="save-btn" (click)="saveCanvas()">Save</button>
+    <button id="review-btn" (click)="addReview()">Add Review</button>
     <button id="draw-mode-btn" (click)="toggleDrawMode()">Turn On Draw Mode</button>
+  </div>
+  <textarea
+    class="text"
+    [ngClass]="{'none': !isEditingText}"
+    (input)="adjustSize($event)"
+    (blur)="saveReview()"
+    #textArea
+    rows="1"
+    style="resize: none; overflow: hidden;"
+  ></textarea>
 </div>

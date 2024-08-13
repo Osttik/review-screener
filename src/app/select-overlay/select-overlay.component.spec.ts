@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CanvasComponent } from './canvas.component';
+import { SelectOverlayComponent } from './select-overlay.component';
 
-describe('CanvasComponent', () => {
-  let component: CanvasComponent;
-  let fixture: ComponentFixture<CanvasComponent>;
+describe('SelectOverlayComponent', () => {
+  let component: SelectOverlayComponent;
+  let fixture: ComponentFixture<SelectOverlayComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [CanvasComponent]
+      imports: [SelectOverlayComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(CanvasComponent);
+    fixture = TestBed.createComponent(SelectOverlayComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
