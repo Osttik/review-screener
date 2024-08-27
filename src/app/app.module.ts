@@ -7,7 +7,7 @@ import { CanvasComponent } from './canvas/canvas.component';
 import { routes } from './app.routes';
 import { ScreenshotSelectorComponent } from './screenshot-selector/screenshot-selector.component';
 import { SelectOverlayComponent } from './select-overlay/select-overlay.component';
-import { StageComponent } from 'ng2-konva';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -18,8 +18,8 @@ import { StageComponent } from 'ng2-konva';
   ],
   imports: [
     BrowserModule,
-    RouterModule.forRoot(routes),
-    StageComponent
+    FormsModule,
+    RouterModule.forRoot(routes)
   ],
   exports: [
     RouterModule 

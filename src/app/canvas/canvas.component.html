@@ -1,25 +1,13 @@
 <div #parent class="canvas-container" (click)="addReviewTextArea($event)">
-  <canvas #canvas id="canvas" class="full-screen-canvas" style="display:none;"></canvas>
-  <canvas #offscreenCanvasElemen class="full-screen-canvas" style="display:none;"></canvas>
-  <ng2-konva [config]="stageConfig">
-    <ng2-konva-layer>
-      <ng2-konva-rect [config]="rectConfig"></ng2-konva-rect>
-      <!-- Add other shapes, images, etc. -->
-    </ng2-konva-layer>
-  </ng2-konva>
+  <canvas #fabricSurface class="full-screen-canvas"></canvas>
   <div class="controls">
     <button id="exit-btn" (click)="exit()">Exit</button>
     <button id="save-btn" (click)="saveCanvas()">Save</button>
     <button id="review-btn" (click)="addReview()">Add Review</button>
-    <button id="draw-mode-btn" (click)="toggleDrawMode()">Turn On Draw Mode</button>
+    <button id="draw-mode-btn" (click)="toggleDrawMode()">{{ drawMode ? 'Cancel Drawing Mode' : 'Turn On Drawing Mode' }}</button>
+    <input type="color" id="drawing-color" [(ngModel)]="drawingColor" (change)="updateBrushColor($event)" />
+    <input type="range" id="drawing-line-width" min="1" max="100" [(ngModel)]="drawingLineWidth" (change)="updateBrushWidth($event)" />
+    <input type="color" id="text-color" [(ngModel)]="textColor" />
+    <input type="range" id="text-size" min="1" max="100" [(ngModel)]="fontSize" />
   </div>
-  <textarea
-    class="text"
-    [ngClass]="{'none': !isEditingText}"
-    (input)="adjustSize($event)"
-    (blur)="saveReview()"
-    #textArea
-    rows="1"
-    style="resize: none; overflow: hidden;"
-  ></textarea>
 </div>

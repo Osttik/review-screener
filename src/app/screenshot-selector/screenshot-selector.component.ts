@@ -1,7 +1,7 @@
-import { Component, NgZone, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, ElementRef, NgZone, OnInit, ViewChild } from '@angular/core';
 import { IPCRenderer } from '../../server';
 import ScreenshotService from '../../services/screenshot.service';
+import { fabric } from 'fabric';
 
 @Component({
   selector: 'app-screenshot-selector',
@@ -9,15 +9,15 @@ import ScreenshotService from '../../services/screenshot.service';
   styleUrl: './screenshot-selector.component.scss'
 })
 export class ScreenshotSelectorComponent implements OnInit {
+  @ViewChild('fabric') fabricRef!: ElementRef<HTMLCanvasElement>;
+  
   public screenshotPath: string | null = null;
   private startX: number | null = null;
   private startY: number | null = null;
   private endX: number | null = null;
   private endY: number | null = null;
-  private isSelecting: boolean = false;
 
   constructor(
-    private _router: Router, 
     private _ngZone: NgZone, 
     private _screenshotService: ScreenshotService) 
   {
@@ -47,13 +47,11 @@ export class ScreenshotSelectorComponent implements OnInit {
   }
 
   startSelection(event: MouseEvent) {
-    this.isSelecting = true;
     this.startX = event.offsetX;
     this.startY = event.offsetY;
   }
 
   endSelection(event: MouseEvent) {
-    this.isSelecting = false;
     this.endX = event.offsetX;
     this.endY = event.offsetY;
     this.createSubimage();
@@ -83,7 +81,25 @@ export class ScreenshotSelectorComponent implements OnInit {
             height
           );
           const subimageDataUrl = canvas.toDataURL('image/png');
-          IPCRenderer.send('save-subimage', subimageDataUrl);
+          const subImage = new Image();
+          subImage.src = subimageDataUrl;
+
+          subImage.onload = () => {
+            const c = new fabric.Canvas(this.fabricRef.nativeElement, {
+              width: 0,
+              height: 0
+            });
+            
+            c.add(new fabric.Image(subImage));
+
+            this.startX = null;
+            this.startY = null;
+            this.endX = null;
+            this.endY = null;
+  
+            //IPCRenderer.send('save-canvas-data', c.toJSON());
+            IPCRenderer.send('save-subimage', subimageDataUrl);
+          }
         }
       };
     }

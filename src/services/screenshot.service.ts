@@ -2,11 +2,11 @@ import { Injectable } from "@angular/core";
 import { Observable, Subject } from "rxjs";
 import { IPCRenderer } from "../server";
 import { Router } from "@angular/router";
-import { CANVAS_PATH } from "../app/app.routes";
 
 export const SCREENSHOT_CAPTURED_BUS = 'screenshot-captured';
 export const SCREENSHOT_CAPTURE_BUS = 'capture-screen';
 export const SCREENSHOT_SUBIMAGE_BUS = 'add-image';
+export const SCREENSHOT_LOAD_BUS = 'load-screenshot';
 
 @Injectable({
     providedIn: 'root'
@@ -25,14 +25,21 @@ export default class ScreenshotService {
             this.screenshotUrlRawValue = screenshotPath;
             this._screenshotUrlSubject.next(screenshotPath);
         });
-
+        
         IPCRenderer.on(SCREENSHOT_CAPTURE_BUS, (event) => {
             this.requestScreenshot();
         });
 
         IPCRenderer.on(SCREENSHOT_SUBIMAGE_BUS, (event, url) => {
+            console.log("SUB")
             this.subImage = url;
-            this._router.navigate([`/${CANVAS_PATH}`]);
+            //this._router.navigate([`/${CANVAS_PATH}`]);
+            this._screenshotUrlSubject.next(url);
+        });
+
+        IPCRenderer.on(SCREENSHOT_LOAD_BUS, (event, screenshotPath) => {
+            console.log("LOAD")
+            this._screenshotUrlSubject.next(screenshotPath);
         });
     }
 
